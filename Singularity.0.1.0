@@ -12,9 +12,9 @@ Bootstrap:docker
 
 %files
     environment.yml /
-    script.py
-    sample_size_matrix.R
-    power_matrix.R
+    script.py /
+    sample_size_matrix.R /
+    power_matrix.R /
 
 %post
     /opt/conda/bin/conda env create -f /environment.yml
