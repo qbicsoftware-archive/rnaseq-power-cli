@@ -21,4 +21,4 @@ Bootstrap:docker
     /opt/conda/bin/conda clean -a
 
 %runscript
-    exec python script.py "$@"
+    exec python /script.py "$@"
