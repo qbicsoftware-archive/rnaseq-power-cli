@@ -12,7 +12,7 @@ Bootstrap:docker
 
 %files
     environment.yml /
-    script.py
+    script.py /
     sample_size_matrix.R /
     power_matrix.R /
 

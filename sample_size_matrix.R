@@ -1,4 +1,5 @@
 library(RnaSeqSampleSize)
+library(heatmap3)
 
 args <- commandArgs(trailingOnly = TRUE)
 print(args)
