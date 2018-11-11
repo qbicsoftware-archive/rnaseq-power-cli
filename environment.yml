@@ -6,3 +6,7 @@ channels:
 dependencies:
   - r::r-base=3.5.1
   - bioconda::bioconductor-rnaseqsamplesize=1.12.0
+  - pip
+  - pip:
+    - dync
+    - attachi
