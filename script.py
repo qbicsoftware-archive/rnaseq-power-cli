@@ -27,7 +27,7 @@ elif app=="samples":
 else:
 	print(USAGE)
 	exit()
-cmd += filename
+cmd += [filename]
 print(cmd)
 
 try:
