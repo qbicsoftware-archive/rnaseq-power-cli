@@ -42,7 +42,8 @@ print(error)
 
 #create results folder
 results_path = "results"
-os.mkdir(results_path)
+if not os.path.exists(results_path):
+	os.mkdir(results_path)
 
 cmd = ["attachi", "-o", results_path, "-u", user, "-t", "Information", project, filename, "RnaSeqSampleSize analysis for "+project]
 print(cmd)
