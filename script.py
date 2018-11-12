@@ -1,4 +1,4 @@
-import sys, subprocess
+import sys, subprocess, os
 
 USAGE = '''USAGE
 
@@ -40,7 +40,11 @@ except subprocess.CalledProcessError as e:
 print(result)
 print(error)
 
-cmd = ["attachi", "-u", user, "-t", "Information", project, filename, "RnaSeqSampleSize analysis for "+project]
+#create results folder
+results_path = "results"
+os.mkdir(results_path)
+
+cmd = ["attachi", "-o", results_path, "-u", user, "-t", "Information", project, filename, "RnaSeqSampleSize analysis for "+project]
 print(cmd)
 
 try:
@@ -53,7 +57,20 @@ except subprocess.CalledProcessError as e:
 print(result)
 print(error)
 
-upload_folder = "unkonw"
+listed_dir = os.listdir(results_path)
+if len(listed_dir) == 1:
+	upload_folder = listed_dir[0]
+else:
+	sys.exit("folder contains "+len(listed_dir)+" files. existing.")
 
-cmd = ["tar", "-c", upload_folder, "|", "dync", "-n", upload_folder+".tar", "-k", "untar:True", "data.qbic.uni-tuebingen.de"]
+cmd = ["tar", "-c", os.path.join(results_path, upload_folder), "|", "dync", "-n", upload_folder+".tar", "-k", "untar:True", "data.local"]
 print(cmd)
+try:
+	p = subprocess.Popen(cmd, stdout = subprocess.PIPE)
+	p.wait()
+	(result, error) = p.communicate()
+except subprocess.CalledProcessError as e:
+	sys.stderr.write("common::run_command() : [ERROR]: output = %s, error code = %s\n" % (e.output, e.returncode))
+
+print(result)
+print(error)
