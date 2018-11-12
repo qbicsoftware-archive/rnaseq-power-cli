@@ -63,7 +63,9 @@ if len(listed_dir) == 1:
 else:
 	sys.exit("folder contains "+len(listed_dir)+" files. existing.")
 
-tar_cmd = ["tar", "-c", os.path.join(results_path, upload_folder)]
+os.rename(os.path.join(results_path, upload_folder), upload_folder)
+
+tar_cmd = ["tar", "-c", upload_folder]
 dync_cmd = ["dync", "-n", upload_folder+".tar", "-k", "untar:True", "data.local"]
 
 try:
