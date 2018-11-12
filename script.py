@@ -63,10 +63,12 @@ if len(listed_dir) == 1:
 else:
 	sys.exit("folder contains "+len(listed_dir)+" files. existing.")
 
-cmd = ["tar", "-c", os.path.join(results_path, upload_folder), "|", "dync", "-n", upload_folder+".tar", "-k", "untar:True", "data.local"]
-print(cmd)
+tar_cmd = ["tar", "-c", os.path.join(results_path, upload_folder)]
+dync_cmd = ["dync", "-n", upload_folder+".tar", "-k", "untar:True", "data.local"]
+
 try:
-	p = subprocess.Popen(cmd, stdout = subprocess.PIPE)
+	tar = subprocess.Popen(tar_cmd, stdout=subprocess.PIPE)
+	p = subprocess.Popen(dync_cmd, stdout = subprocess.PIPE, stdin=tar.stdout)
 	p.wait()
 	(result, error) = p.communicate()
 except subprocess.CalledProcessError as e:
