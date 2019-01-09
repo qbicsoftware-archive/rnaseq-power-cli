@@ -5,10 +5,14 @@ USAGE = '''USAGE
 [user] [projectcode] [app = power/samples] [app parameters...]
 
 power estimation parameters:
-power [# genes] [# diff. expr. genes] [min. detectable fold change] [dispersion] [FDR]
+power none [# genes] [# diff. expr. genes] [replicates (sample size)] [FDR] [dispersion]
+OR
+power tcga [# genes] [# diff. expr. genes] [replicates (sample size)] [FDR] [TCGA name]
 
 sample size estimation:
-samples [# genes] [# diff expr. genes] [dispersion] [FDR] [power/sensitivity]'''
+samples none [# genes] [# diff expr. genes] [FDR] [dispersion] [avg counts/gene]
+OR
+samples tcga [# genes] [# diff expr. genes] [FDR] [TCGA name]'''
 
 if len(sys.argv) < 4:
 	print(USAGE)
