@@ -1,1 +1,2 @@
- testing
+Uses https://bioconductor.org/packages/release/bioc/html/RnaSeqSampleSize.html
+Creates power or sample size matrix given different experimental parameters. Uploads created heatmaps as attachment to openBIS using attachi-cli and Dync.
