@@ -4,7 +4,7 @@ library(heatmap3)
 args <- commandArgs(trailingOnly = TRUE)
 print(args)
 
-mode <- as.numeric(args[1]) # mode: data, tcga, none
+mode <- args[1] # mode: data, tcga, none
 m <- as.numeric(args[2]) # number of genes
 m1 <- as.numeric(args[3]) # expected number of DE genes
 f <- as.numeric(args[4]) # FDR
