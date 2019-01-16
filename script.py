@@ -2,7 +2,7 @@ import sys, subprocess, os
 
 USAGE = '''USAGE
 
-[user] [projectcode] [app = power/samples] [app parameters...]
+[user] [sampleCode] [app = power/samples] [app parameters...]
 
 power estimation parameters:
 power none [# genes] [# diff. expr. genes] [replicates (sample size)] [FDR] [dispersion]
@@ -18,7 +18,8 @@ if len(sys.argv) < 4:
 	print(USAGE)
 	exit()
 user = sys.argv[1]
-project = sys.argv[2]
+sampleCode = sys.argv[2]
+project = sampleCode[0:5]
 app = sys.argv[3]
 arguments = sys.argv[4:]
 
@@ -68,7 +69,22 @@ if len(listed_dir) == 1:
 else:
 	sys.exit("folder contains "+len(listed_dir)+" files. existing.")
 
-os.rename(os.path.join(results_path, upload_folder), upload_folder)
+old_results_path = os.path.join(results_path, upload_folder)
+attachCode = project+"000"
+
+cmd = ["sed", "-i", "s/"+attachCode+"/"+sampleCode+"/g", os.path.join(old_results_path, "metadata.txt")]
+print(cmd)
+
+try:
+	p = subprocess.Popen(cmd, stdout = subprocess.PIPE)
+	p.wait()
+	(result, error) = p.communicate()
+except subprocess.CalledProcessError as e:
+	sys.stderr.write("common::run_command() : [ERROR]: output = %s, error code = %s\n" % (e.output, e.returncode))
+
+print(result)
+print(error)
+os.rename(old_results_path, upload_folder)
 
 tar_cmd = ["tar", "-c", upload_folder]
 dync_cmd = ["dync", "-n", upload_folder+".tar", "-k", "untar:True", "data.local"]
