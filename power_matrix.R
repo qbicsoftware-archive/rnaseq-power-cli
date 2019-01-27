@@ -9,18 +9,27 @@ m1 <- as.numeric(args[3]) # expected number of DE genes
 n <- as.numeric(args[4]) # sample size
 #rho <- as.numeric(args[3]) # minimum detectable log fold change
 f <- as.numeric(args[5]) # FDR
+result_file <- args[7]
 
 if(mode=="none") {
   phi0 <- as.numeric(args[6]) # dispersion
   #lambda0 <- as.numeric(args[6]) # avg. read count/gene
-  result_file <- args[7]
+}
+if(mode=="file") {
+countsPath <- args[6]
+tab = read.table(counts_file_path, header=TRUE, sep="\t")
+counts <- as.matrix(tab[-1,-1])
+dim(counts)
+distrObject <- est_count_dispersion(counts)
+testGenes = min(1000,nrow(counts))
 }
 if(mode=="tcga") {
-  tcga <- args[6]
-  result_file <- args[7]
-  data(list = tcga)
-  repNumber = 10
-  temp <- RnaSeqSampleSize:::selectDistribution(distributionObject = tcga, repNumber = repNumber, dispersionDigits = 2,
+  testGenes = 1000)
+  distrObject <- args[6]
+  #data(list = distrObject)
+}
+if(mode=="tcga" || mode="file") {
+  temp <- RnaSeqSampleSize:::selectDistribution(distributionObject = distrObject, repNumber = testGenes, dispersionDigits = 2,
       minAveCount = 5, maxAveCount = 2000,
       seed = 123,
       species = "hsa")

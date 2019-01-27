@@ -14,12 +14,22 @@ if(mode=="none") {
   lambda0 <- as.numeric(args[6]) # avg. read count/gene
   result_file <- args[7]
 }
+if(mode=="file") {
+  countsPath <- args[5]
+  tab = read.table(counts_file_path, header=TRUE, sep="\t")
+  counts <- as.matrix(tab[-1,-1])
+  dim(counts)
+  distrObject <- est_count_dispersion(counts)
+  testGenes = min(1000,nrow(counts))
+}
 if(mode=="tcga") {
-  tcga <- args[5]
+  testGenes = 1000)
+  distrObject <- args[5]
+  #data(list = distrObject)
+}
+if(mode=="tcga" || mode="file") {
   result_file <- args[6]
-  data(list = tcga)
-  repNumber = 10
-  temp <- RnaSeqSampleSize:::selectDistribution(distributionObject = tcga, repNumber = repNumber, dispersionDigits = 2,
+  temp <- RnaSeqSampleSize:::selectDistribution(distributionObject = distrObject, repNumber = testGenes, dispersionDigits = 2,
       minAveCount = 5, maxAveCount = 2000,
       seed = 123,
       species = "hsa")
@@ -28,8 +38,6 @@ if(mode=="tcga") {
   phi0 <- temp$maxDispersionDistribution
   lambda0 <- max(min(countDistribution), 1)
 }
-
-#power <- as.numeric(args[7]) # power (sensitivity)
 
 result<-optimize_parameter(fun=sample_size,opt1="rho", opt2="power",opt1Value=c(1.5,2,3,4), opt2Value=c(0.5,0.6,0.7,0.8,0.9,0.95), lambda0=lambda0, m=m, m1=m1, phi0=phi0, f=f)
 #result<-optimize_parameter(fun=sample_size,opt1="rho", opt2="lambda0",opt1Value=c(1.1,2,3,4), opt2Value=c(1:5,10,20), power=power, m=m, m1=m1, phi0=phi0, f=f)

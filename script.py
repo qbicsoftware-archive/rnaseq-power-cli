@@ -1,5 +1,8 @@
 import sys, subprocess, os
 
+POSTMAN_CONFIG_PATH = config.txt
+RAW_COUNT_FILE = raw.read.counts.tsv
+DATA_PATH = "bis_data"
 USAGE = '''USAGE
 
 [user] [sampleCode] [app = power/samples] [app parameters...]
@@ -8,11 +11,39 @@ power estimation parameters:
 power none [# genes] [# diff. expr. genes] [replicates (sample size)] [FDR] [dispersion]
 OR
 power tcga [# genes] [# diff. expr. genes] [replicates (sample size)] [FDR] [TCGA name]
+OR
+power data [# genes] [# diff. expr. genes] [replicates (sample size)] [FDR] [code of pilot dataset]
 
 sample size estimation:
 samples none [# genes] [# diff expr. genes] [FDR] [dispersion] [avg counts/gene]
 OR
-samples tcga [# genes] [# diff expr. genes] [FDR] [TCGA name]'''
+samples tcga [# genes] [# diff expr. genes] [FDR] [TCGA name]
+OR
+samples data [# genes] [# diff expr. genes] [FDR] [code of pilot dataset]'''
+
+
+
+def fetchData(app, arguments):
+	if(app=="power"):
+		code = arguments[5]
+	if(app=="samples"):
+		code = arguments[4]
+	filePath = os.path.join(DATA_PATH, RAW_COUNT_FILE)
+	arguments = [a.replace(code, filePath) for a in arguments]
+	if not os.path.exists(data_path):
+		os.mkdir(DATA_PATH)
+	cmd = ["java", "-jar", "postman-cli-0.3.0.jar", code, '@'+POSTMAN_CONFIG_PATH]
+	print(cmd)
+	try:
+		p = subprocess.Popen(cmd, stdout = subprocess.PIPE)
+		p.wait()
+		(result, error) = p.communicate()
+	except subprocess.CalledProcessError as e:
+		sys.stderr.write("common::run_command() : [ERROR]: output = %s, error code = %s\n" % (e.output, e.returncode))
+	print(result)
+	print(error)
+	
+java -jar postman-cli-0.3.0.jar -f res -u iisfr01 QMLMEE982R1 '@'#POSTMAN_CONFIG_PATH
 
 if len(sys.argv) < 4:
 	print(USAGE)
@@ -22,7 +53,10 @@ sampleCode = sys.argv[2]
 project = sampleCode[0:5]
 app = sys.argv[3]
 arguments = sys.argv[4:]
+source = arguments[0]
 
+if source=="data":
+	fetchData(app, arguments)
 if app=="power":
 	filename = "power.pdf"
 	cmd = ["Rscript", "/power_matrix.R"] + arguments
