@@ -1,7 +1,7 @@
 import sys, subprocess, os
 
-POSTMAN_CONFIG_PATH = config.txt
-RAW_COUNT_FILE = raw.read.counts.tsv
+POSTMAN_CONFIG_PATH = "config.txt"
+RAW_COUNT_FILE = "raw.read.counts.tsv"
 DATA_PATH = "bis_data"
 USAGE = '''USAGE
 
