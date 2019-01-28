@@ -24,7 +24,7 @@ if(mode=="file") {
   testGenes = min(1000,nrow(counts))
 }
 if(mode=="tcga") {
-  testGenes = 1000)
+  testGenes = 1000
   distrObject <- args[5]
   #data(list = distrObject)
 }
