@@ -43,8 +43,6 @@ def fetchData(app, arguments):
 	print(result)
 	print(error)
 	
-java -jar postman-cli-0.3.0.jar -f res -u iisfr01 QMLMEE982R1 '@'#POSTMAN_CONFIG_PATH
-
 if len(sys.argv) < 4:
 	print(USAGE)
 	exit()

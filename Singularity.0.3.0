@@ -15,7 +15,7 @@ Bootstrap:docker
     script.py /
     sample_size_matrix.R /
     power_matrix.R /
-    postman-cli-0.3.0.jar /
+    postman-cli-0.3.0.jar
 
 %post
     /opt/conda/bin/conda env create -f /environment.yml
