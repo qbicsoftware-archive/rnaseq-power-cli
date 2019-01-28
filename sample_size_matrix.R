@@ -14,6 +14,7 @@ if(mode=="none") {
   phi0 <- as.numeric(args[5]) # dispersion
   lambda0 <- as.numeric(args[6]) # avg. read count/gene
   result_file <- args[7]
+  result<-optimize_parameter(fun=sample_size,main=main,opt1="rho", opt2="power",opt1Value=c(1.5,2,3,4), opt2Value=c(0.5,0.6,0.7,0.8,0.9,0.95), lambda0=lambda0, m=m, m1=m1, phi0=phi0, f=f)
 }
 if(mode=="file") {
   countsPath <- args[5]
@@ -30,9 +31,8 @@ if(mode=="tcga") {
 }
 if(mode=="tcga" || mode=="file") {
   result_file <- args[6]
-  result<-optimize_parameter(fun=sample_size_distribution,main=main,opt1="rho", opt2="power",opt1Value=c(1.5,2,3,4), opt2Value=c(0.5,0.6,0.7,0.8,0.9,0.95), lambda0=lambda0, m=m, m1=m1, phi0=phi0, f=f)  
+  result<-optimize_parameter(fun=sample_size_distribution,main=main,opt1="rho", opt2="power",opt1Value=c(1.5,2,3,4), opt2Value=c(0.5,0.6,0.7,0.8,0.9,0.95),distributionObject=distrObject, m=m, m1=m1, phi0=phi0, f=f)  
 }
-result<-optimize_parameter(fun=sample_size,main=main,opt1="rho", opt2="power",opt1Value=c(1.5,2,3,4), opt2Value=c(0.5,0.6,0.7,0.8,0.9,0.95), lambda0=lambda0, m=m, m1=m1, phi0=phi0, f=f)
 print(result)
 pdf(result_file)
 heatmap3(result, Colv = NA, Rowv = NA, xlab = "Log fold change", ylab = "Sensitivity (power)", scale = "n", col = matlab::jet.colors(1000), cexCol = 1, cexRow = 1, lasCol = 1, lasRow = 1, main = "Minimum sample size (per group)")

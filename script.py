@@ -30,7 +30,7 @@ def fetchData(app, arguments):
 		code = arguments[4]
 	filePath = os.path.join(DATA_PATH, RAW_COUNT_FILE)
 	arguments = [a.replace(code, filePath) for a in arguments]
-	if not os.path.exists(data_path):
+	if not os.path.exists(DATA_PATH):
 		os.mkdir(DATA_PATH)
 	cmd = ["java", "-jar", "postman-cli-0.3.0.jar", code, '@'+POSTMAN_CONFIG_PATH]
 	print(cmd)
