@@ -30,7 +30,7 @@ if(mode=="tcga") {
   distrObject <- args[5]
   #data(list = distrObject)
 }
-if(mode=="tcga" || mode="file") {
+if(mode=="tcga" || mode=="file") {
   result_file <- args[6]
   result <- optimize_parameter(fun=est_power_distribution,main=main,opt1="rho",opt2="f",opt1Value=c(1.1,2,3),opt2Value=c(0.01,0.03,0.05,0.1,0.2),m=m, m1=m1,n=n,distributionObject=distrObject)
 }
