@@ -1,6 +1,7 @@
-import sys, subprocess, os
+import sys, subprocess, os, ConfigParser
 
 POSTMAN_CONFIG_PATH = "config.txt"
+POSTMAN_USER_CONFIG_PATH = "userconfig.txt"
 RAW_COUNT_FILE = "raw.read.counts.tsv"
 DATA_PATH = "bis_data"
 USAGE = '''USAGE
@@ -21,8 +22,6 @@ samples tcga [# genes] [# diff expr. genes] [FDR] [TCGA name]
 OR
 samples data [# genes] [# diff expr. genes] [FDR] [code of pilot dataset]'''
 
-
-
 def fetchData(app, arguments):
 	if(app=="power"):
 		code = arguments[5]
@@ -32,7 +31,11 @@ def fetchData(app, arguments):
 	arguments = [a.replace(code, filePath) for a in arguments]
 	if not os.path.exists(DATA_PATH):
 		os.mkdir(DATA_PATH)
-	cmd = ["java", "-jar", "postman-cli-0.3.0.jar", code, '@'+POSTMAN_CONFIG_PATH]
+	cpar = ConfigParser.RawConfigParser()
+	cpar.read(POSTMAN_USER_CONFIG_PATH)
+	pm_user = cpar.get('postman login','user')
+	pm_pw = cpar.get('postman login','password')
+	cmd = ["java", "-jar", "postman-cli-0.3.0.jar", code, '@'+POSTMAN_CONFIG_PATH, "-u", pm_user, "-p", pm_pw]
 	print(cmd)
 	try:
 		p = subprocess.Popen(cmd, stdout = subprocess.PIPE)
