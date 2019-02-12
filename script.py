@@ -1,4 +1,4 @@
-import sys, subprocess, os, ConfigParser
+import sys, subprocess, os, configparser
 
 POSTMAN_CONFIG_PATH = "config.txt"
 POSTMAN_USER_CONFIG_PATH = "userconfig.txt"
@@ -31,7 +31,7 @@ def fetchData(app, arguments):
 	arguments = [a.replace(code, filePath) for a in arguments]
 	if not os.path.exists(DATA_PATH):
 		os.mkdir(DATA_PATH)
-	cpar = ConfigParser.RawConfigParser()
+	cpar = configparser.RawConfigParser()
 	cpar.read(POSTMAN_USER_CONFIG_PATH)
 	pm_user = cpar.get('postman login','user')
 	pm_pw = cpar.get('postman login','password')
