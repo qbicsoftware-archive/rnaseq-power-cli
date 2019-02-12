@@ -35,7 +35,7 @@ def fetchData(app, arguments):
 	cpar.read(POSTMAN_USER_CONFIG_PATH)
 	pm_user = cpar.get('postman login','user')
 	pm_pw = cpar.get('postman login','password')
-	cmd = ["java", "-jar", "postman-cli-0.3.0-custom.jar", code, '@'+POSTMAN_CONFIG_PATH, "-u", pm_user, "-p", pm_pw]
+	cmd = ["java", "-jar", "/postman-cli-0.3.0-custom.jar", code, '@'+POSTMAN_CONFIG_PATH, "-u", pm_user, "-p", pm_pw]
 	print(cmd)
 	try:
 		p = subprocess.Popen(cmd, stdout = subprocess.PIPE)
